@@ -1,4 +1,4 @@
-'''
+
 class Animal(object):
 	def __init__(self, sound, name,age,fv_color):
 		self.sound = sound
@@ -30,4 +30,4 @@ fav_breakfast=('pancakes')
 s=person('sadeen',14,'jerusalem','female')
 s.eat_breakfast("pancakes")
 s.watch("cukur")
-'''
+

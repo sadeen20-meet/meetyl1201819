@@ -7,8 +7,8 @@ number2=number1/2
 print(number2)
 list1=[2,4,6]
 for numbers in list1:
-	print numbers
-	print numbers*2
+	print (numbers)
+	print (numbers*2)
 print (list1[0]+list1[1]+list1[2])
 
 import turtle
