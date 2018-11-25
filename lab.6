@@ -19,16 +19,30 @@ s=Square(5)
 s.random_color()
 turtle.mainloop()
 '''
+
 from turtle import Turtle
 import turtle
 turtle.begin_poly()
-turtle.register_shape("strawberry",((50,0),(80,-50),(50,-100),(0,100),(-30,-50),(0,0)))
+turtle.register_shape("strawberry",(turtle.get_poly()))
+import turtle
+turtle.pu()
+turtle.forward(50)
+for i in range (6):
+	turtle.pd()
+	turtle.right(60)
+	turtle.forward(50)
 turtle.mainloop()
+turtle.end_poly()
 class Hexagon(Turtle):
 	def __init__(self,size):
-		Turtle.__init__(self)
-	self.shapesize(size)
-	self.shape((50,0),(80,-50),(50,-100),(0,100),(-30,-50),(0,0))
+		self.shapesize(size)
+		self.shape(strawberry)
+
+c=Hexagon(200)
+turtle.mainloop()
+
+
+
 
 
 
