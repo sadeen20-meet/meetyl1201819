@@ -6,6 +6,58 @@ import random
 turtle.tracer(1)
 turtle.penup()
 turtle.hideturtle()
+score=0
+pos_list=[]
+UP_ARROW = "Up" 
+LEFT_ARROW = "Left"
+DOWN_ARROW = "Down"
+RIGHT_ARROW = "Right" 
+SPACEBAR = "space" 
+
+UP = 0
+LEFT = 1
+DOWN = 2
+RIGHT = 3
+direction = UP
+UP_EDGE = 300
+DOWN_EDGE = -300
+RIGHT_EDGE = 300
+LEFT_EDGE = -300
+def up():
+    global direction
+    if not direction == DOWN:
+        direction=UP
+   
+        print("You pressed the up key")
+def down():
+    global direction
+    if not direction == UP:
+        direction=DOWN
+    
+        print('you pressed the down key!')
+
+def left():
+    global direction
+    if not direction == RIGHT:
+        direction=LEFT
+   
+        print('you pressed the left key!')
+
+def right():
+    global direction
+    if not direction == LEFT:
+        direction=RIGHT
+   
+        print('youpressed the right key!')
+
+
+turtle.onkeypress(up, UP_ARROW) 
+turtle.onkeypress(down, DOWN_ARROW)
+turtle.onkeypress(right, RIGHT_ARROW)
+turtle.onkeypress(left, LEFT_ARROW)
+
+turtle.listen()
+
 class Ball(Turtle):
 	def __init__(self, radius, x, y, dx, dy, color):
 		Turtle.__init__(self)
@@ -17,7 +69,7 @@ class Ball(Turtle):
 		self.dy=random.randint(30,50)/40
 		self.shapesize(radius/10)
 		self.color(color)
-	def move (self,screen_width,screen_height):
+	def move_Ball (self,screen_width,screen_height):
 		
 
 
@@ -47,3 +99,36 @@ for BALL in range (NUMBER_OF_BALLS):
 	BALLS.append(BALL)
 
 #moving code!!!
+	def move(self,width,height):
+		oldx=self.xcor()
+		oldy=self.ycor()
+		newx=oldx+self.dx
+		newy=oldy+self.dy
+		if newx >= width or newx <= -width:
+			self.dx= -self.dx
+			newx=oldx + self.dx
+		if newy>= height or newy<= -height:
+			self.dy= -self.dy
+			newy=oldy + self.dy
+		self.goto(newx,newy)
+
+
+
+border=turtle.clone()
+border.ht()
+border.penup()
+border.goto(-300,300)
+border.pendown()
+border.goto(300,300)
+border.goto(300,-300)
+border.goto(-300,-300)
+border.goto(-300,300)
+
+#numbers label!
+num_label=turtle.Turtle()
+num_label.ht()
+num_label.penup()
+num_label.color('blue')
+num_label.width('10')
+num_label.goto(0,-400)
+num_label.write(str (score))
