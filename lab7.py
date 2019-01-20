@@ -2,7 +2,7 @@ import turtle
 from turtle import Turtle
 import math
 import random
-turtle.tracer(0)
+turtle.tracer(1,1)
 class Ball(Turtle):
 	def __init__(self, radius, dx, dy, color):
 		Turtle.__init__(self)
