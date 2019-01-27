@@ -410,18 +410,19 @@ def congrats_you_won():#here is the function that run the winning thing and thn 
 	time.sleep(1)
 	level_label.write("level: "+str(level),font=("Arial", 25,"normal"))
 	turtle.undo()
-	level = level +1
-	
-	score = 0
-	lives = 3
-	turtle.register_shape("ezgif.com-rotate.gif")
-	turtle.bgpic("ezgif.com-rotate.gif")
-	level_label.write("level: "+str(level),font=("Arial", 25,"normal"))
+	for b in range(1):
+		level = level +1
+		
+		score = 0
+		lives = 3
+		turtle.register_shape("ezgif.com-rotate.gif")
+		turtle.bgpic("ezgif.com-rotate.gif")
+		level_label.write("level: "+str(level),font=("Arial", 25,"normal"))
 
 
-	MY_BALL.radius=25
-	print (MY_BALL.radius)
-	check()
+		MY_BALL.radius=25
+		print (MY_BALL.radius)
+		check()
 
 
 
