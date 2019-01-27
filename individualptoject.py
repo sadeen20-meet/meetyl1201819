@@ -3,24 +3,32 @@ from turtle import Turtle
 import time #we will need it later in the code 
 import math # we will need it later in the collision part 
 import random #we are ging everytime we need the value of the variables to be chosen randomly 
+import tkinter as tk
+from tkinter import simpledialog
+import os 
 
 turtle.tracer(0,1) #makes the turtle move smoother abd zero is the best 
 turtle.penup() #we don't need lines all around 
 turtle.hideturtle()#we don't need to see that black arrow
 score=0#we will need it later in making the score method 
 lives=3#we will need it later 
-# global waiting
+level=1
 waiting=0
 #i want my ball to move by arrows yes it needs more lines and code but it's more fun and easier so
 #here is how i made it 
 turtle.register_shape("bgpic.gif")
 turtle.bgpic("bgpic.gif")
+if level == 2:
+	turtle.undo()
 UP_ARROW = "Up" 
 LEFT_ARROW = "Left"
 DOWN_ARROW = "Down"
 RIGHT_ARROW = "Right" 
 SPACEBAR = "space" 
-P=""
+ENTER =	"return"
+S="s"
+A="a"
+
 UP = 0
 LEFT = 1
 DOWN = 2
@@ -33,10 +41,7 @@ LEFT_EDGE = -300
 def up():
     global direction #it's always the same 
     if not direction == DOWN:
-
-
-
-        direction=UP #this means that the direction is now up 
+    	direction=UP #this means that the direction is now up 
    
         # print("You pressed the up key")#no need for this just to make sure my code works well 
 def down():
@@ -60,21 +65,32 @@ def right():
    
         # print('you pressed the right key!')#no need for this just to make sure my code works well 
 
-global paused
-paused = False
+#global paused
+#paused = False
 def pause():
-	global paused
-	paused = not paused
-	print("game is paused")
-	if paused == False:
-		run_game()
+	#global paused
+	#paused = True
+	turtle.write("The game is paused! ",move=False, align="center", font=("Arial", 40, "normal"))
+	time.sleep(5)
+	turtle.undo()
+	print(paused)
+	# if paused == False:
 
+	# 	check()
 
+#def unpause():
+#	global paused
+#	paused = False
+	# turtle.write("The game is paused! ",move=False, align="center", font=("Arial", 40, "normal"))
+#	print("game is unpaused")
+	# print(paused)
+	
 turtle.onkeypress(up, UP_ARROW) 
 turtle.onkeypress(down, DOWN_ARROW)
 turtle.onkeypress(right, RIGHT_ARROW)
 turtle.onkeypress(left, LEFT_ARROW)
 turtle.onkeypress(pause, SPACEBAR)
+#turtle.onkeyrelease(unpause, SPACEBAR)
 turtle.listen()
 #i made the whole game in one file idk why nut yeah so here is the code for the class
 #the class Ball inherits from the big class turtle and here is how the code goes :
@@ -153,7 +169,7 @@ SCREEN_WIDTH=turtle.getcanvas().winfo_width()/2
 SCREEN_HEIGHT=turtle.getcanvas().winfo_height()/2
 
 #here's MY_BALL's characterstics ;)
-MY_BALL=Ball(40,0,0,10,10,"blue")
+MY_BALL=Ball(40,0,0,7,7,str(simpledialog.askstring("Input", "what color do you want your ball to be? ", parent=tk.Tk().withdraw()))) 
 
 #these will help us with the variables that their values will be cjosen randomly but also in the range that we want:
 
@@ -173,6 +189,8 @@ for i in range (NUMBER_OF_BALLS):
 	dx=random.randint(MINIMUM_BALL_DX,MAXIMUM_BALL_DX)
 	dy=random.randint(MINIMUM_BALL_DY,MAXIMUM_BALL_DY)
 	color=(random.random(),random.random(),random.random())
+	x !=  MY_BALL.xcor()
+	y != MY_BALL.ycor()
 	BALL=Ball(RADUIS, x, y, dx, dy, color)#the code can tell what this is ,it's basically definding the balls 
 	BALLS.append(BALL)					  #as many as the for loop work and add them to BALLS list 
 
@@ -222,6 +240,8 @@ def check_all_balls_collision():# while coding this my laptop went craaazzzyyyy 
 					dy= random.randint(MINIMUM_BALL_DY,MAXIMUM_BALL_DY)
 
 				if ball_a.radius<ball_b.radius:
+					x != MY_BALL.xcor()
+					y != MY_BALL.ycor()
 					ball_a.goto(x,y)
 					ball_a.radius=RADUIS
 					ball_a.shapesize(RADUIS/10)
@@ -231,6 +251,8 @@ def check_all_balls_collision():# while coding this my laptop went craaazzzyyyy 
 					ball_b.radius=ball_b.radius+1
 					ball_b.shapesize(ball_b.radius/10)
 				else:
+					x != MY_BALL.xcor()
+					y != MY_BALL.ycor()
 					ball_b.goto(x,y)
 					ball_b.radius=RADUIS
 					ball_b.shapesize(RADUIS/10)
@@ -240,7 +262,7 @@ def check_all_balls_collision():# while coding this my laptop went craaazzzyyyy 
 					ball_a.radius=ball_a.radius+1
 					ball_a.shapesize(ball_a.radius/10)	
 
-
+#in this function i typed a code that tells the program what to do if my balls collides with other balls either the lives become less or the score increases 
 def check_myball_collision():
 	global score
 	global lives
@@ -297,65 +319,115 @@ def check_myball_collision():
 					num_label.write("score: "+str (score),font=("Arial", 25,"normal"))
 
 	return True
-				
+def continue_playing():
+	global lives
+	lives=3
+	check()
 
-'''
-def paused():
+def play_again():
+	MY_BALL.radius=40
+	global lives
+	global score
+	lives = 3
+	score=0
 
-    largeText = pygame.font.SysFont("comicsansms",115)
-    TextSurf, TextRect = text_objects("Paused", largeText)
-    TextRect.center = ((display_width/2),(display_height/2))
-    gameDisplay.blit(TextSurf, TextRect)
-    
+	check()
 
-    while pause:
-        for event in pygame.event.get():
-
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-                
-        #gameDisplay.fill(white)
-        
-
-        button("Continue",150,450,100,50,green,bright_green,unpause)
-        button("Quit",550,450,100,50,red,bright_red,quitgame)
-
-        pygame.display.update()
-        clock.tick(15)
-
-'''
-
-
+#in this game you lose if you collide with a bigger ball so here is the code that do the game over thing 
 def game_over():
 	if lives==0:
-		turtle.write("oppsyy game over :( ",move=False, align="center", font=("Arial", 40, "normal"))
+		turtle.write("oppsyy game over:( press S to continue or A to play again ",move=False, align="center", font=("Arial", 40, "normal"))#this tells the player the bad news 
+		time.sleep(2)#time so the player can read the bad news 
+		turtle.undo()#we don't need the bad news to stay forever on te screen 
 		turtle.penup()
 		turtle.goto(0,-50)
-		turtle.write("your score is " + str(score),align="center",font=("Arial", 40,"normal"))
-		time.sleep(30000)
-		print ("oppssyyy game over")
+		turtle.write("your score is " + str(score),align="center",font=("Arial", 40,"normal")) #basically it tells the player his/her score 
+		time.sleep(3)#time so the player can read
+		turtle.undo()#we don't the score to stay forever
+		print ("oppssyyy game over")#just to make sure my code worked 
+		turtle.onkeypress(continue_playing, S)#when you hit s you continue from the place you've stopped
+		turtle.onkeypress(play_again, A)#when you hit a you start over again 
+		turtle.listen()
+'''
+	def check_level2():
+			global paused
+			global lives
+			global waiting
+			while lives>0:
+				turtle.register_shape("/home/student/Desktop/meetyl1201819/background.gif")
+				turtle.bgpic("/home/student/Desktop/meetyl1201819/background.gif")
 
 
-		quit()
+		
+			
+				MY_BALL.penup()#we don't need lines on the screen 
+				MY_BALL.move_my_ball(700,500)
+				turtle.update()
+				move_all_balls(BALLS, 700, 500)
+				check_all_balls_collision()
+				if waiting == 0:
+					check_myball_collision()
+				else:
+					waiting -= 1
+				turtle.update()
+				time.sleep(SLEEP)
+		# else:
+		# 	# print("here")
+		# 	turtle.onkeypress(pause, SPACEBAR)
+		# 	turtle.listen()
 
-def congrats_youwon():
-	if MY_BALL.radius>= 100:
-		turtle.write("yohoo you won! :) ",move=False, align="center", font=("Arial", 40, "normal"))
-		turtle.penup()
-		turtle.goto(0,-70)
-		turtle.write("your score is " + str(score),align="center",font=("Arial", 40,"normal"))
-		for a in range(10):
-			color=(random.random(),random.random(),random.random())
-			MY_BALL.color(color)
-		time.sleep(30000)
-		quit()
+				#what feeling is more fun than winnig? so here what needs to happen so you win ,your score should be 200!
+				if score > 400:
+					congrats_you_won()
+			
+
+
+			if lives <= 0:
+				game_over()
+'''
+
+		
+
+def congrats_you_won():#here is the function that run the winning thing and thn it transform you to another level  
+	global score
+	global level
+	global lives
+
+
+			#os.system("recent:///d9a265ebb3f37c806f789fce5c4780d4")
+	turtle.write("yohoo you won! welcome to level two  ",move=False, align="center", font=("Arial", 40, "normal"))
+	time.sleep(2)
+	turtle.undo()
+	turtle.penup()
+	turtle.goto(0,-80)
+	turtle.write("your score is " + str(score),align="center",font=("Arial", 40,"normal"))
+	time.sleep(2)
+	turtle.undo()
+	
+	#for a in range(10):
+	#	color=(random.random(),random.random(),random.random())
+	#	MY_BALL.color(color)
+	time.sleep(1)
+	level_label.write("level: "+str(level),font=("Arial", 25,"normal"))
+	turtle.undo()
+	level = level +1
+	
+	score = 0
+	lives = 3
+	turtle.register_shape("ezgif.com-rotate.gif")
+	turtle.bgpic("ezgif.com-rotate.gif")
+	level_label.write("level: "+str(level),font=("Arial", 25,"normal"))
+
+
+	MY_BALL.radius=25
+	print (MY_BALL.radius)
+	check()
 
 
 
 
 
-
+		
 
 
 #this draws a border so it's easier and more clear for the player 
@@ -384,7 +456,7 @@ mainloop()
 lives_label=turtle.Turtle()
 lives_label.ht()
 lives_label.penup()
-lives_label.color('pink')
+lives_label.color('black')
 lives_label.width('10')
 lives_label.goto(500,400)
 lives_label.write("lives: "+str(lives),font=("Arial", 25,"normal"))
@@ -399,35 +471,76 @@ num_label.width('10')
 num_label.goto(550,-500)
 num_label.write("score: "+str (score),font=("Arial", 25,"normal"))
 
+#numbers label for the level 
+level_label=turtle.Turtle()
+level_label.ht()
+level_label.penup()
+level_label.color('black')
+level_label.width('10')
+level_label.goto(-600,460)
+level_label.write("level: "+str (level),font=("Arial", 25,"normal"))
+
 
 #annnddd heeerrreee where we press the start button of the game yoohooo  , we call all the functions we coded so 
-#the game starts foreveeerr cause whle true is always true 
-def run_game():
+#the game starts 
+def check():
 	global paused
 	global lives
 	global waiting
 	while lives>0:
+		# print("still going")
 
-		if not paused:
-			MY_BALL.penup()#we don't need lines on the screen 
-			MY_BALL.move_my_ball(700,500)
-			turtle.update()
-			move_all_balls(BALLS, 700, 500)
-			check_all_balls_collision()
-			if waiting == 0:
-				check_myball_collision()
-			else:
-				waiting -= 1
-			turtle.update()
-			time.sleep(SLEEP)
+
+		
+			
+		MY_BALL.penup()#we don't need lines on the screen 
+		MY_BALL.move_my_ball(700,500)
+		turtle.update()
+		move_all_balls(BALLS, 700, 500)
+		check_all_balls_collision()
+		if waiting == 0:
+			check_myball_collision()
+		else:
+			waiting -= 1
+		turtle.update()
+		time.sleep(SLEEP)
+		# else:
+		# 	# print("here")
+		# 	turtle.onkeypress(pause, SPACEBAR)
+		# 	turtle.listen()
+
+		#what feeling is more fun than winnig? so here what needs to happen so you win ,your score should be 200!
+		if score > 2:
+			congrats_you_won()
+			
 
 
 	if lives <= 0:
 		game_over()
 
 
-	if MY_BALL.radius>=100:
-		congrats_youwon()
+	
 
-run_game()
+
+
+'''
+enter =False		
+def check():
+	global paused
+	paused = False
+	turtle.write("are you ready? then press enter to start! :) ",move=False, align="center", font=("Arial", 40, "normal"))
+	global enter
+	enter = not enter
+	if enter == False:
+		turtle.undo()
+		paused=not paused
+		run_game()
+
+'''	
+turtle.write("are you ready? then press enter to start! :) ",move=False, align="center", font=("Arial", 40, "normal"))
+time.sleep(3)
+turtle.undo()
+turtle.onkey(check, 'Return')
+turtle.listen()
+
 turtle.mainloop()
